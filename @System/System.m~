@@ -1,0 +1,17 @@
+classdef System < handle
+
+    %% PROPERTIES
+    properties
+
+    end
+
+    methods
+   	 	%% COSTRUCTOR
+        function obj = System()
+             end
+
+        function Example(obj)
+	         end
+
+    end
+
