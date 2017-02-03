@@ -1,20 +1,17 @@
 classdef Agent
-
+    
     %% PROPERTIES
     properties
-    m;
+        m;          +
     end
     
-	%% METHODS
+    %% METHODS
     methods
-    	
-		%% COSTRUCTOR
+        
+        %% COSTRUCTOR
         function obj = Agent(m)
             obj.m = m;
-             end
-    
-        function Example(obj)
-	     end
-
+        end
+        
     end
 end

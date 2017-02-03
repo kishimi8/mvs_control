@@ -1,18 +1,17 @@
 classdef System < handle
-
+    
     %% PROPERTIES
     properties
-
+        agents;
     end
-
-	%% METHODS	
+    
+    %% METHODS
     methods
-   	 	%% COSTRUCTOR
-        function obj = System()
-             end
-
-        function Example(obj)
-	         end
-
+        %% COSTRUCTOR
+        function obj = System(agents)
+            obj.agents = agents;
+        end
+        simulate(obj,duration);
+        
     end
 end
