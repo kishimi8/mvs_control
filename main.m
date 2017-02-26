@@ -9,11 +9,11 @@ animate_flag = 1;
 %% system parameters
 m = 1;                   % mass
 b = 0;                   % external damping constant
-k = 0.01;                 % spring constant
-r = 0.2;                 % internal damping
+k = 0.5;                 % spring constant
+r = 0.0051;              % internal damping
 l = 5;                   % desired distance between vehicles
 
-N = 3;                   % number or vehicles
+N = 2;                   % number or vehicles
 I = eye(N);              % identity matrix
 S = diag(ones(N,1),0) - ...
     diag(ones(N-1,1),-1);% connectivity matrix
@@ -25,12 +25,12 @@ Ru = diag(D)- diag(D(:,1:N-1),-1); % unidirectional dissipation matrix
 R = diag(D) - diag(D(:,2:N),1) - ...
     diag(D(:,1:N-1),-1) + ...
     diag([D(:,2:N),0]);  % bidirectional dissipation matrix
-Ref.A = -0.1;            % reference velocity amplitude (first vehicle)
+Ref.A = -.1;             % reference velocity amplitude (first vehicle)
 Ref.f = 0.0628;          % reference velocity frequency
 Ref.phi = 0;             % reference velocity phase
 
 %% simulation parameters
-t_end = 200;             % end time
+t_end = 1000;            % end time
 t_step = .1;             % time steps
 t_lsim = 0:t_step:t_end; % simulation time
 v0 = zeros(1,N);         % initial velocities
@@ -38,10 +38,12 @@ p0 = M*v0';              % initial generalized momenta
 n = 0:1:N-1;             % vector number vehicle in the string
 q0 = l*n;                % absolute initial positions
 delta0 = [-l,q0(1:N-1)] - q0 + l; % initial relative positions
-energy0 = 1/2*(M'*p0.^2)+1/2*K*(delta0'.^2);
+energy0 = ones(1,N)';%1/2*(M'*p0.^2)+1/2*K*(delta0'.^2);
+
+epsilon = 0.998;
 
 %% simulate
-f_handle = @(t,x)simulate(t,x,N,B,Ru,S,K,M,Ref); %unidirectional
+f_handle = @(t,x)simulate(t,x,N,B,Ru,S,K,M,Ref,epsilon); %unidirectional
 [t,x] = ode15s(f_handle,t_lsim,[p0;delta0';energy0]);
 
 %% plot
@@ -86,9 +88,9 @@ if plot_flag
     
     figure(7)
     hold on
-    plot(t,x(:,2*N+1:end));
+    plot(t,x(:,2*N+1:3*N));
     xlabel('time [s]');
-    ylabel('power integrated [J]');
+    ylabel('energy tanks [J]');
     
     if animate_flag
         figure(1);
